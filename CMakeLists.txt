@@ -23,9 +23,9 @@ else(LINUX OR ANDROID OR MACOS)
     set(SFML_STATIC_LIBRARIES FALSE)
 endif()
 
-######################################################
-# SET YOUR SFML DIR FOR EACH ARCHITECTURE ON DESKTOP #
-######################################################
+####################################################
+# SET YOUR SFML DIR FOR EACH PLATFORM/ARCHITECTURE #
+####################################################
 if (WINDOWS)
     if (${BUILD_ARCH} STREQUAL "x86")
         set(SFML_LOC "<insert>/SFML-2.6.1-x86")
@@ -35,9 +35,9 @@ if (WINDOWS)
         set(SFML_LOC "<insert>/SFML-2.6.1-ARM64")
     endif()
 elseif(LINUX)
-    set(SFML_LOC "<insert>/SFML-2.6.1")
+    set(SFML_LOC "<insert>/SFML-2.6.1-Linux")
 elseif(MACOS)
-    set(SFML_LOC "<insert>/SFML-2.6.1")
+    set(SFML_LOC "<insert>/SFML-2.6.1-MacOS")
 elseif(IOS)
     set(SFML_LOC "<insert>/SFML-2.6.1-iOS")
 endif()
@@ -148,7 +148,7 @@ elseif(IOS)
     set(ICON_NAME "AppLogo.icns")
     set(ICON_PATH "${CMAKE_SOURCE_DIR}/src/${ICON_NAME}")
 
-    add_executable(${CMAKE_PROJECT_NAME} MACOSX_BUNDLE ${Project_SOURCES} ${ICON_PATH} ${Whereami_SOURCES} ${LAUNCH_SCREEN} ${CMAKE_SOURCE_DIR}/assets/Res)
+    add_executable(${CMAKE_PROJECT_NAME} MACOSX_BUNDLE ${Project_SOURCES} ${ICON_PATH} ${Whereami_SOURCES} ${LAUNCH_SCREEN} ${CMAKE_SOURCE_DIR}/assets)
     set_source_files_properties( ${ICON_PATH} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
     set_source_files_properties( ${LAUNCH_SCREEN} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
     set_source_files_properties("${CMAKE_SOURCE_DIR}/assets" PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
