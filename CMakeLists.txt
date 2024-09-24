@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.15)
 project (Project)
-set(APP_NAME "SFML Test")
+set(APP_NAME "Project")
 set(APP_VERSION "1.0.0")
 set(APP_IDENTIFIER "com.Username.App")
 
