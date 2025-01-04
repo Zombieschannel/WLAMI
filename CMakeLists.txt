@@ -30,20 +30,20 @@ endif()
 ####################################################
 if (WINDOWS)
     if (${BUILD_ARCH} STREQUAL "x86")
-        set(SFML_LOC "<insert>/SFML-2.6.1-x86")
+        set(SFML_ROOT "<insert>/SFML-3.0.0-x86")
     elseif(${BUILD_ARCH} STREQUAL "x64")
-        set(SFML_LOC "<insert>/SFML-2.6.1-x64")
+        set(SFML_ROOT "<insert>/SFML-3.0.0-x64")
     elseif(${BUILD_ARCH} STREQUAL "ARM64")
-        set(SFML_LOC "<insert>/SFML-2.6.1-ARM64")
+        set(SFML_ROOT "<insert>/SFML-3.0.0-ARM64")
     endif()
 elseif(LINUX)
-    set(SFML_LOC "<insert>/SFML-2.6.1-Linux")
+    set(SFML_ROOT "<insert>/SFML-3.0.0-Linux")
 elseif(MACOS)
-    set(SFML_LOC "<insert>/SFML-2.6.1-MacOS")
+    set(SFML_ROOT "<insert>/SFML-3.0.0-MacOS")
 elseif(IOS)
-    set(SFML_LOC "<insert>/SFML-2.6.1-iOS")
+    set(SFML_ROOT "<insert>/SFML-3.0.0-iOS")
 elseif(EMSCRIPTEN)
-    set(SFML_LOC "<insert>/SFML-2.6.1-Emscripten")
+    set(SFML_ROOT "<insert>/SFML-3.0.0-Emscripten")
 endif()
 
 #FILES
@@ -57,9 +57,6 @@ endif()
 
 if (WINDOWS OR LINUX)
     file(COPY "assets/" DESTINATION "${CMAKE_BINARY_DIR}")
-    if (WINDOWS)
-        file(COPY "${SFML_LOC}/bin/openal32.dll" DESTINATION "${CMAKE_BINARY_DIR}/")
-    endif()
 endif()
 
 if (WINDOWS)
@@ -67,8 +64,7 @@ if (WINDOWS)
     #enable_language("RC") #uncoment if using icons
     #set (WIN32_RESOURCES "src/icon.rc")
 
-    set(SFML_DIR "${SFML_LOC}/lib/cmake/SFML")
-    find_package(SFML 2 COMPONENTS graphics audio window system network REQUIRED)
+    find_package(SFML 3 COMPONENTS Graphics Audio Window System Network REQUIRED)
 
     add_executable (${CMAKE_PROJECT_NAME} ${Project_SOURCES} #[[${WIN32_RESOURCES}]])
     set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES LINK_FLAGS_DEBUG "/SUBSYSTEM:CONSOLE")
@@ -76,8 +72,7 @@ if (WINDOWS)
 
 elseif(LINUX)
     
-    set(SFML_DIR "${SFML_LOC}/lib/cmake/SFML")
-    find_package(SFML 2 COMPONENTS graphics audio window system network REQUIRED)
+    find_package(SFML 3 COMPONENTS Graphics Audio Window System Network REQUIRED)
     add_executable (${CMAKE_PROJECT_NAME} ${Project_SOURCES})
 
 elseif(ANDROID)
@@ -86,18 +81,13 @@ elseif(ANDROID)
     set(CMAKE_MAP_IMPORTED_CONFIG_RELWITHDEBINFO RELEASE)
     set(PATH_TO_SFML ${ANDROID_NDK}/sources/third_party/sfml)
     set(SFML_DIR ${PATH_TO_SFML}/lib/${ANDROID_ABI}/cmake/SFML)
-    find_package(SFML 2 COMPONENTS graphics audio window system network REQUIRED)
+    find_package(SFML 3 COMPONENTS Graphics Audio Window System Network REQUIRED)
 
     add_library(${CMAKE_PROJECT_NAME} SHARED ${Project_SOURCES})
 
-    add_library(openal SHARED IMPORTED)
-    set_target_properties(openal PROPERTIES IMPORTED_LOCATION_RELEASE ${PATH_TO_SFML}/extlibs/lib/${ANDROID_ABI}/libopenal.so)
-    set_target_properties(openal PROPERTIES IMPORTED_LOCATION_DEBUG ${PATH_TO_SFML}/extlibs/lib/${ANDROID_ABI}/libopenal.so)
-
 elseif(MACOS)
 
-    set(SFML_DIR "${SFML_LOC}/lib/cmake/SFML")
-    find_package(SFML 2 COMPONENTS graphics audio window system network REQUIRED)
+    find_package(SFML 3 COMPONENTS Graphics Audio Window System Network REQUIRED)
 
     set(ICON_NAME "AppLogo.icns")
     set(ICON_PATH "${CMAKE_SOURCE_DIR}/src/${ICON_NAME}")
@@ -145,8 +135,12 @@ elseif(MACOS)
 
 elseif(IOS)
 
-    set(SFML_DIR "${SFML_LOC}/lib/cmake/SFML")
-    find_package(SFML 2 COMPONENTS graphics audio window system network REQUIRED)
+    set(Freetype_DIR ${SFML_ROOT}/lib/cmake/freetype)
+    set(Vorbis_DIR ${SFML_ROOT}/lib/cmake/Vorbis)
+    set(Ogg_DIR ${SFML_ROOT}/lib/cmake/Ogg)
+    set(FLAC_DIR ${SFML_ROOT}/lib/cmake/FLAC)
+    set(SFML_DIR ${SFML_ROOT}/lib/cmake/SFML)
+    find_package(SFML 3 COMPONENTS Graphics Audio Window System Network REQUIRED)
 
     set(LAUNCH_SCREEN "${CMAKE_SOURCE_DIR}/LaunchScreen.storyboard")
     set(ICON_NAME "AppLogo.icns")
@@ -180,10 +174,7 @@ elseif(EMSCRIPTEN)
     set(SFML_EMSCRIPTEN_TARGET_COMPILE_OPTIONS
         $<$<CONFIG:Debug>:${SFML_EMSCRIPTEN_TARGET_COMPILE_OPTIONS_DEBUG}>
         $<$<CONFIG:Release>:${SFML_EMSCRIPTEN_TARGET_COMPILE_OPTIONS_RELEASE}>
-        -pthread
-        --use-port=freetype
-        --use-port=ogg
-        --use-port=vorbis
+        #-pthread
     )
 
     set(SFML_EMSCRIPTEN_TARGET_LINK_OPTIONS_DEBUG -g3 -gsource-map -sASSERTIONS=2 -sCHECK_NULL_WRITES=1 -sSAFE_HEAP=1 -sSTACK_OVERFLOW_CHECK=1)
@@ -209,7 +200,7 @@ elseif(EMSCRIPTEN)
         -sMAX_WEBGL_VERSION=1               # Specifies the highest WebGL version to target
         -sMIN_WEBGL_VERSION=1               # Specifies the lowest WebGL version to target
         -sSTACK_SIZE=4mb                    # Set the total stack size
-        -sUSE_PTHREADS=1                    # Enable threading support
+        #-sUSE_PTHREADS=1                    # Enable threading support
         -sWASM=1                            # Compile code to WebAssembly
 
         -sGL_EXPLICIT_UNIFORM_LOCATION=1  # TODO P0:
@@ -222,8 +213,14 @@ elseif(EMSCRIPTEN)
         --shell-file=${CMAKE_SOURCE_DIR}/shell.html
     )
     set(CMAKE_EXECUTABLE_SUFFIX ".html")
-    set(SFML_DIR "${SFML_LOC}/lib/cmake/SFML")
-    find_package(SFML 2 COMPONENTS graphics audio window system network REQUIRED)
+
+    set(Freetype_DIR ${SFML_ROOT}/lib/cmake/freetype)
+    set(Vorbis_DIR ${SFML_ROOT}/lib/cmake/Vorbis)
+    set(Ogg_DIR ${SFML_ROOT}/lib/cmake/Ogg)
+    set(FLAC_DIR ${SFML_ROOT}/lib/cmake/FLAC)
+    set(SFML_DIR ${SFML_ROOT}/lib/cmake/SFML)
+    find_package(SFML 3 COMPONENTS Graphics Audio Window System Network REQUIRED)
+
     add_executable (${CMAKE_PROJECT_NAME} ${Project_SOURCES})
     target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE ${SFML_EMSCRIPTEN_TARGET_COMPILE_OPTIONS})
     target_link_options(${CMAKE_PROJECT_NAME} PRIVATE ${SFML_EMSCRIPTEN_TARGET_LINK_OPTIONS})
@@ -256,10 +253,10 @@ if (WINDOWS)
 endif()
 ]]
 
-set (LINK_SFML sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
+set (LINK_SFML SFML::System SFML::Window SFML::Graphics SFML::Audio SFML::Network)
 
 if (WINDOWS)
-    target_link_libraries(${CMAKE_PROJECT_NAME} ${LINK_SFML} sfml-main)
+    target_link_libraries(${CMAKE_PROJECT_NAME} ${LINK_SFML} SFML::Main)
 elseif(LINUX)
     target_link_libraries(${CMAKE_PROJECT_NAME} ${LINK_SFML} -lGL -lX11)
 elseif(ANDROID)
@@ -267,8 +264,7 @@ elseif(ANDROID)
         log
         android
         ${LINK_SFML}
-        -Wl,--whole-archive sfml-main -Wl,--no-whole-archive
-        openal
+        SFML::Main
         EGL
         GLESv1_CM
     )
@@ -277,5 +273,5 @@ elseif(MACOS)
 elseif(IOS)
     target_link_libraries(${CMAKE_PROJECT_NAME} ${LINK_SFML})
 elseif(EMSCRIPTEN)
-    target_link_libraries(${CMAKE_PROJECT_NAME} ${LINK_SFML} -lfreetype -logg -lvorbis -lz)
+    target_link_libraries(${CMAKE_PROJECT_NAME} ${LINK_SFML})
 endif()
