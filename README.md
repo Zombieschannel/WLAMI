@@ -1,7 +1,7 @@
-# WLAMI
-Windows-Linux-Android-MacOS-iOS SFML project
+# WLAMI(E)
+Windows-Linux-Android-MacOS-iOS-Emscripten SFML project
 
-Project template for Windows, Linux, Android, MacOS and iOS.
+Project template for Windows, Linux, Android, MacOS, iOS and Emscripten.
 
 Compilation for Windows and Linux can be done with Visual Studio.
 
@@ -12,6 +12,8 @@ Compilation for Android can be done with Android Studio.
 Compilation for MacOS can be done from the command line.
 
 Compilation for iOS can be done from Xcode.
+
+Compilation for the Web with Emscripten can be done from the command line with [my branch](https://github.com/Zombieschannel/SFML/tree/SFML-2.6.x-EMCC).
 
 ## Setup
 
