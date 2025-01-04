@@ -13,7 +13,7 @@ Compilation for MacOS can be done from the command line.
 
 Compilation for iOS can be done from Xcode.
 
-Compilation for the Web with Emscripten can be done from the command line with [my branch](https://github.com/Zombieschannel/SFML/tree/SFML-2.6.x-EMCC).
+Compilation for the Web with Emscripten can be done from the command line with [my branch](https://github.com/Zombieschannel/SFML/tree/SFML-3.x.x-EMCC).
 
 ## Setup
 
