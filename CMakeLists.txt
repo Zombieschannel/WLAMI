@@ -64,7 +64,7 @@ if (WINDOWS)
     #enable_language("RC") #uncoment if using icons
     #set (WIN32_RESOURCES "src/icon.rc")
 
-    find_package(SFML 3 COMPONENTS Graphics Audio Window System Network REQUIRED)
+    find_package(SFML 3 COMPONENTS Graphics Audio Window System Network Main REQUIRED)
 
     add_executable (${CMAKE_PROJECT_NAME} ${Project_SOURCES} #[[${WIN32_RESOURCES}]])
     set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES LINK_FLAGS_DEBUG "/SUBSYSTEM:CONSOLE")
