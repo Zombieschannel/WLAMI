@@ -108,11 +108,11 @@ elseif(MACOS)
     add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}.app/Contents/Libs"
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${SFML_LOC}/lib/libsfml-audio.2.6.dylib" "${SFML_LOC}/lib/libsfml-audio-d.2.6.dylib"
-        "${SFML_LOC}/lib/libsfml-system.2.6.dylib" "${SFML_LOC}/lib/libsfml-system-d.2.6.dylib"
-        "${SFML_LOC}/lib/libsfml-window.2.6.dylib" "${SFML_LOC}/lib/libsfml-window-d.2.6.dylib"
-        "${SFML_LOC}/lib/libsfml-graphics.2.6.dylib" "${SFML_LOC}/lib/libsfml-graphics-d.2.6.dylib"
-        "${SFML_LOC}/lib/libsfml-network.2.6.dylib" "${SFML_LOC}/lib/libsfml-network-d.2.6.dylib"
+        "${SFML_LOC}/lib/libsfml-audio.3.0.dylib" "${SFML_LOC}/lib/libsfml-audio-d.3.0.dylib"
+        "${SFML_LOC}/lib/libsfml-system.3.0.dylib" "${SFML_LOC}/lib/libsfml-system-d.3.0.dylib"
+        "${SFML_LOC}/lib/libsfml-window.3.0.dylib" "${SFML_LOC}/lib/libsfml-window-d.3.0.dylib"
+        "${SFML_LOC}/lib/libsfml-graphics.3.0.dylib" "${SFML_LOC}/lib/libsfml-graphics-d.3.0.dylib"
+        "${SFML_LOC}/lib/libsfml-network.3.0.dylib" "${SFML_LOC}/lib/libsfml-network-d.3.0.dylib"
         "${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}.app/Contents/Libs"
         COMMENT "Copying dylibs to the app bundle..."
     )
